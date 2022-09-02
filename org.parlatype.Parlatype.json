@@ -60,9 +60,9 @@
             "sources" : [
                 {
                     "type" : "file",
-                    "url" : "https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-dist.zip",
+                    "url" : "https://github.com/bazelbuild/bazel/releases/download/5.3.0/bazel-5.3.0-dist.zip",
                     "dest-filename" : "bazel.zip",
-                    "sha256" : "d7f40d0cac95a06cea6cb5b7f7769085257caebc3ee84269dd9298da760d5615"
+                    "sha256" : "ee801491ff0ec3a562422322a033c9afe8809b64199e4a94c7433d4e14e6b921"
                 }
             ]
         },

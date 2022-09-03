@@ -45,6 +45,8 @@
             "buildsystem" : "simple",
             "build-commands" : [
                 "unzip bazel.zip -d bazel-build",
+                "cp fix-build-with-gcc11.patch /run/build/bazel/bazel-build/third_party/ijar",
+                "cd bazel-build/third_party/ijar; patch mapped_file_unix.cc --forward --strip=1 --input=fix-build-with-gcc11.patch",
                 "cd bazel-build; ./compile.sh",
                 "install -Dm0755 bazel-build/output/bazel /app/bin/bazel"
             ],
@@ -53,16 +55,20 @@
                 "no-debuginfo" : true,
                 "no-debuginfo-compression" : true,
                 "env" : {
-                    "EXTRA_BAZEL_ARGS" : "--tool_java_runtime_version=local_jdk",
+                    "EXTRA_BAZEL_ARGS" : "--host_javabase=@local_jdk//:jdk",
                     "JAVA_HOME" : "/usr/lib/sdk/openjdk11/jvm/openjdk-11"
                 }
             },
             "sources" : [
                 {
                     "type" : "file",
-                    "url" : "https://github.com/bazelbuild/bazel/releases/download/5.3.0/bazel-5.3.0-dist.zip",
+                    "url" : "https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-dist.zip",
                     "dest-filename" : "bazel.zip",
-                    "sha256" : "ee801491ff0ec3a562422322a033c9afe8809b64199e4a94c7433d4e14e6b921"
+                    "sha256" : "d7f40d0cac95a06cea6cb5b7f7769085257caebc3ee84269dd9298da760d5615"
+                },
+                {
+                    "type" : "file",
+                    "path" : "patches/fix-build-with-gcc11.patch"
                 }
             ]
         },
@@ -157,7 +163,7 @@
             "buildsystem" : "simple",
             "build-commands" : [
                 "mkdir -p /run/ccache/bazel",
-                "cd tensorflow-r2.3/; rm .bazelversion; ./configure;",
+                "cd tensorflow-r2.3/; ./configure;",
                 "cd tensorflow-r2.3/; bazel --output_user_root=/run/ccache/bazel build --distdir=../bazel-distdir --override_repository=io_bazel_rules_go=/run/build/deepspeech/rules_go-0.23.15 --override_repository=com_github_nelhage_rules_boost=/run/build/deepspeech/rules_boost-1e3a69bf2d5cd10c34b74f066054cd335d033d71 --override_repository=io_bazel_rules_docker=/run/build/deepspeech/rules_docker-0.15.0 --workspace_status_command='bash native_client/bazel_workspace_status_cmd.sh' --config=monolithic --config=noaws -c opt --copt=-O3 --copt='-D_GLIBCXX_USE_CXX11_ABI=0' --copt=-fvisibility=hidden //native_client:libdeepspeech.so",
                 "install -Dm0644 tensorflow-r2.3/bazel-bin/native_client/libdeepspeech.so /app/lib/",
                 "install -Dm0644 native_client/deepspeech.h /app/include"

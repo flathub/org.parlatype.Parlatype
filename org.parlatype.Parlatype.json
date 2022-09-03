@@ -46,14 +46,14 @@
             "build-commands" : [
                 "unzip bazel.zip -d bazel-build",
                 "cd bazel-build; ./compile.sh",
-                "install -m 0755 -D bazel-build/output/bazel /app/bin/bazel"
+                "install -Dm0755 bazel-build/output/bazel /app/bin/bazel"
             ],
             "build-options" : {
                 "strip" : false,
                 "no-debuginfo" : true,
                 "no-debuginfo-compression" : true,
                 "env" : {
-                    "EXTRA_BAZEL_ARGS" : "--host_javabase=@local_jdk//:jdk",
+                    "EXTRA_BAZEL_ARGS" : "--tool_java_runtime_version=local_jdk",
                     "JAVA_HOME" : "/usr/lib/sdk/openjdk11/jvm/openjdk-11"
                 }
             },

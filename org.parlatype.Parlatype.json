@@ -45,8 +45,8 @@
             "buildsystem" : "simple",
             "build-commands" : [
                 "unzip bazel.zip -d bazel-build",
-                "cp fix-build-with-gcc11.patch /run/build/bazel/bazel-build/third_party/ijar",
-                "cd bazel-build/third_party/ijar; patch mapped_file_unix.cc --forward --strip=1 --input=fix-build-with-gcc11.patch",
+                "cp *.patch /run/build/bazel/bazel-build/third_party/ijar",
+                "cd bazel-build/third_party/ijar; patch mapped_file_unix.cc --forward --strip=1 --input=0001-fix-build-with-gcc11.patch; patch zlib_client.h --forward --strip=1 --input=0002-fix-build-with-gcc11.patch; patch mapped_file.h --forward --strip=1 --input=0003-fix-build-with-gcc11.patch",
                 "cd bazel-build; ./compile.sh",
                 "install -Dm0755 bazel-build/output/bazel /app/bin/bazel"
             ],
@@ -68,7 +68,15 @@
                 },
                 {
                     "type" : "file",
-                    "path" : "patches/fix-build-with-gcc11.patch"
+                    "path" : "patches/0001-fix-build-with-gcc11.patch"
+                },
+                {
+                    "type" : "file",
+                    "path" : "patches/0002-fix-build-with-gcc11.patch"
+                },
+                {
+                    "type" : "file",
+                    "path" : "patches/0003-fix-build-with-gcc11.patch"
                 }
             ]
         },

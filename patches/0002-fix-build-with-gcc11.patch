@@ -1,0 +1,13 @@
+diff --git a/zlib_client.h b/zlib_client.h
+index ed66163..c9e9cbc 100755
+--- a/zlib_client.h
++++ b/zlib_client.h
+@@ -16,6 +16,8 @@
+ #define THIRD_PARTY_IJAR_ZLIB_CLIENT_H_
+ 
+ #include <limits.h>
++#include <limits>
++#include <stdexcept>
+ 
+ #include "third_party/ijar/common.h"
+ 

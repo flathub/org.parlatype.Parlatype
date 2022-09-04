@@ -1,15 +1,12 @@
 {
     "app-id": "org.parlatype.Parlatype",
-
     "runtime": "org.gnome.Platform",
     "runtime-version": "42",
     "sdk": "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.openjdk11"
     ],
-
     "command": "parlatype",
-
     "finish-args": [
         "--share=ipc",
         "--socket=fallback-x11",
@@ -44,39 +41,32 @@
             "name" : "bazel",
             "buildsystem" : "simple",
             "build-commands" : [
-                "unzip bazel.zip -d bazel-build",
-                "cp *.patch /run/build/bazel/bazel-build/third_party/ijar",
-                "cd bazel-build/third_party/ijar; patch mapped_file_unix.cc --forward --strip=1 --input=0001-fix-build-with-gcc11.patch; patch zlib_client.h --forward --strip=1 --input=0002-fix-build-with-gcc11.patch; patch mapped_file.h --forward --strip=1 --input=0003-fix-build-with-gcc11.patch",
-                "cd bazel-build; ./compile.sh",
-                "install -Dm0755 bazel-build/output/bazel /app/bin/bazel"
+                "chmod +x bazel",
+                "install -Dm0755 bazel /app/bin/bazel"
             ],
             "build-options" : {
                 "strip" : false,
                 "no-debuginfo" : true,
-                "no-debuginfo-compression" : true,
-                "env" : {
-                    "EXTRA_BAZEL_ARGS" : "--host_javabase=@local_jdk//:jdk",
-                    "JAVA_HOME" : "/usr/lib/sdk/openjdk11/jvm/openjdk-11"
-                }
+                "no-debuginfo-compression" : true
             },
             "sources" : [
                 {
                     "type" : "file",
-                    "url" : "https://github.com/bazelbuild/bazel/releases/download/3.1.0/bazel-3.1.0-dist.zip",
-                    "dest-filename" : "bazel.zip",
-                    "sha256" : "d7f40d0cac95a06cea6cb5b7f7769085257caebc3ee84269dd9298da760d5615"
+                    "url" : "https://github.com/bazelbuild/bazel/releases/download/4.0.0/bazel-4.0.0-linux-x86_64",
+                    "dest-filename" : "bazel",
+                    "sha256" : "7bee349a626281fc8b8d04a7a0b0358492712377400ab12533aeb39c2eb2b901",
+                    "only-arches": [
+                        "x86_64"
+                    ]
                 },
                 {
                     "type" : "file",
-                    "path" : "patches/0001-fix-build-with-gcc11.patch"
-                },
-                {
-                    "type" : "file",
-                    "path" : "patches/0002-fix-build-with-gcc11.patch"
-                },
-                {
-                    "type" : "file",
-                    "path" : "patches/0003-fix-build-with-gcc11.patch"
+                    "url" : "https://github.com/bazelbuild/bazel/releases/download/4.0.0/bazel-4.0.0-linux-arm64",
+                    "dest-filename" : "bazel",
+                    "sha256" : "a714c94ffccfacd20e5ea15d94ea26b3d64c9e1a12c048355f18b38cbe32d6ae",
+                    "only-arches": [
+                        "aarch64"
+                    ]
                 }
             ]
         },
@@ -171,8 +161,8 @@
             "buildsystem" : "simple",
             "build-commands" : [
                 "mkdir -p /run/ccache/bazel",
-                "cd tensorflow-r2.3/; ./configure;",
-                "cd tensorflow-r2.3/; bazel --output_user_root=/run/ccache/bazel build --distdir=../bazel-distdir --override_repository=io_bazel_rules_go=/run/build/deepspeech/rules_go-0.23.15 --override_repository=com_github_nelhage_rules_boost=/run/build/deepspeech/rules_boost-1e3a69bf2d5cd10c34b74f066054cd335d033d71 --override_repository=io_bazel_rules_docker=/run/build/deepspeech/rules_docker-0.15.0 --workspace_status_command='bash native_client/bazel_workspace_status_cmd.sh' --config=monolithic --config=noaws -c opt --copt=-O3 --copt='-D_GLIBCXX_USE_CXX11_ABI=0' --copt=-fvisibility=hidden //native_client:libdeepspeech.so",
+                "cd tensorflow-r2.3/; rm .bazelversion; ./configure;",
+                "cd tensorflow-r2.3/; /app/bin/bazel --output_user_root=/run/ccache/bazel build --distdir=../bazel-distdir --override_repository=io_bazel_rules_go=/run/build/deepspeech/rules_go-0.23.15 --override_repository=com_github_nelhage_rules_boost=/run/build/deepspeech/rules_boost-1e3a69bf2d5cd10c34b74f066054cd335d033d71 --override_repository=io_bazel_rules_docker=/run/build/deepspeech/rules_docker-0.15.0 --workspace_status_command='bash native_client/bazel_workspace_status_cmd.sh' --config=monolithic --config=noaws -c opt --copt=-O3 --copt='-D_GLIBCXX_USE_CXX11_ABI=0' --copt=-fvisibility=hidden //native_client:libdeepspeech.so",
                 "install -Dm0644 tensorflow-r2.3/bazel-bin/native_client/libdeepspeech.so /app/lib/",
                 "install -Dm0644 native_client/deepspeech.h /app/include"
             ],

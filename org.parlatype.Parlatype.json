@@ -69,6 +69,10 @@
                     "type": "archive",
                     "url": "https://github.com/gkarsay/parlatype/releases/download/v4.1/parlatype-4.1.tar.gz",
                     "sha256": "787029bf4d67c8bc8711a98eb29786be456eb5e5b339d7c8c09482e1be6c5fef"
+                },
+                {
+                    "type": "patch",
+                    "path": "appdata.patch"
                 }
             ]
         }

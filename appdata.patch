@@ -1,0 +1,22 @@
+commit d4b2664da94f3832fbd61f9445528a45514c14c6
+Author: Gabor Karsay <gabor.karsay@gmx.at>
+Date:   Wed Apr 3 22:06:11 2024 +0200
+
+    appdata: add <launchable> tag
+    
+    Flathub's linter demands it. Also remove .desktop from <id> tag.
+
+diff --git a/data/org.parlatype.Parlatype.appdata.xml.in b/data/org.parlatype.Parlatype.appdata.xml.in
+index ce81a34..1d4088c 100644
+--- a/data/org.parlatype.Parlatype.appdata.xml.in
++++ b/data/org.parlatype.Parlatype.appdata.xml.in
+@@ -1,7 +1,8 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <!-- Copyright 2017–2019 Gabor Karsay <gabor.karsay@gmx.at> -->
+ <component type="desktop">
+-  <id>org.parlatype.Parlatype.desktop</id>
++  <id>org.parlatype.Parlatype</id>
++  <launchable type="desktop-id">org.parlatype.Parlatype.desktop</launchable>
+   <metadata_license>CC-BY-SA-4.0</metadata_license>
+   <project_license>GPL-3.0+</project_license>
+   <name>Parlatype</name>
